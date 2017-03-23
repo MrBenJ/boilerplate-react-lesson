@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-border: inset;
+}
+.webapp {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    .main {
+        width: 500px;
+        height: 500px;
+    }
+}
+
+.main {
+    background-color: orange;
+    // margin: 0 auto;
+    position: absolute;
+    transform: translate( -50%, -50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+}
+
+.main-text {
+    color:white;
+    text-align: center;
+    font-size: 2vw;
+}
