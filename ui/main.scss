@@ -20,11 +20,17 @@ body {
     transform: translate( -50%, -50%);
     top: 50%;
     left: 50%;
-    border-radius: 50%;
+    // border-radius: 50%;
 }
 
 .main-text {
     color:white;
     text-align: center;
     font-size: 2vw;
+}
+
+.main-button {
+    width: 300px;
+    margin: 0 auto;
+    display: block;
 }

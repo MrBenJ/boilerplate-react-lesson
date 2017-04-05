@@ -6,38 +6,41 @@ class WebApp extends React.Component {
         super(props);
         this.displayName = "WebApp";
 
-        this.changeOwner = this.changeOwner.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentWillMount() {
+        console.log('Will Mount');
         this.setState({
-            owner: this.props.owner
+            filterBy: ''
         });
     }
 
-    changeOwner() {
-        let owner = this.state.owner;
-        if(owner) { owner += 'z'}
+    onChange(evt) {
         this.setState({
-            owner: owner
+            filterBy: evt.target.value
         });
     }
 
     render() {
+        console.log('render()');
         return (
             <div className="webapp">
                 <div className="main">
                     <p className="main-text">
-                        {this.props.title}
+                        GROCERY LIST
                     </p>
-                    <p className="main-text">
-                        Owner: {this.state.owner}
-                    </p>
-                    <button
-                        className="main-text"
-                        onClick={this.changeOwner}>
-                        Change Owner
-                    </button>
+                    <input
+                        type="text"
+                        value={this.state.filterBy}
+                        onChange={this.onChange}/>
+                    <ul>
+                        {this.props.list.map((item, idx) => {
+                            if(item.includes(this.state.filterBy)) {
+                                return <li key={idx}>{item}</li>;
+                            }
+                        })}
+                    </ul>
                 </div>
             </div>
         );
@@ -45,21 +48,20 @@ class WebApp extends React.Component {
 
 
     componentDidMount() {
-        // console.log('Did Mount');
+        console.log('Did Mount');
     }
 
     componentWillUpdate() {
-        // console.log('Will Update');
+        console.log('Will Update');
     }
 
     componentDidUpdate() {
-        // console.log('Did Update');
+        console.log('Did Update');
     }
 }
 
 WebApp.propTypes = {
-    title: React.PropTypes.string.isRequired,
-    owner: React.PropTypes.string.isRequired
+    list: React.PropTypes.array.isRequired
 };
 
 export default WebApp;
