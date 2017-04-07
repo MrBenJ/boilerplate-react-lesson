@@ -1,50 +1,40 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import SearchRecipe from './components/recipe-filter';
+// import SearchRecipe from './components/recipe-filter';
 import Recipe from './components/recipe';
 import './main.scss';
 
 class RecipeApp extends React.Component {
-  constructor() {
+  constructor(props) {
+    super(props);
 
-    super();
-
-    this.state = {
-      recipes: [
-        {
-          name: 'Banana Pudding',
-          ingrediants: ['eggs', 'butter', 'bread', 'lard'],
-          directions: 'Do this with the banana pudding like this'
-        },
-        {
-          name: 'Salad',
-          ingrediants: ['eggs', 'butter', 'bread', 'lard'],
-          directions: 'Do this with the banana pudding like this'
-        },
-        {
-          name: 'Hamburgers',
-          ingrediants: ['eggs', 'butter', 'bread', 'lard'],
-          directions: 'Do this with the banana pudding like this'
-        },
-        {
-          name: 'French Toast',
-          ingrediants: ['eggs', 'butter', 'bread', 'lard'],
-          directions: 'Do this with the banana pudding like this'
-        },
-        {
-          name: 'Hot Fudge Sundae',
-          ingrediants: ['eggs', 'butter', 'bread', 'lard'],
-          directions: 'Do this with the banana pudding like this'
-        }]
-    };
+    this.updateSearch = this.updateSearch.bind(this);
   }
+
+  updateSearch(evt) {
+    this.setState({
+      search: evt.target.value
+    });
+  }
+
+  componentWillMount() {
+
+    this.setState({
+      search: ''
+    });
+  }
+
   render() {
-    console.log(this.state.recipes)
     return (
       <div>
-        <SearchRecipe />
-        <Recipe recipes={this.state.recipes} />
+        <input
+          type="text"
+          value={this.state.search}
+          onChange={this.updateSearch}
+        />
+        <Recipe recipes={this.props.recipes.filter( (item) => {
+          return item.name.match(new RegExp(this.state.search, 'ig'));
+        })} />
       </div>
     )
   }
