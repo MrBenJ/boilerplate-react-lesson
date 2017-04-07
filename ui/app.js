@@ -1,29 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import WebApp from './components/webapp';
+import RecipeApp from './recipeApp';
 import './main.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('app');
-    const list = [
-        'apples',
-        'bananas',
-        'oranges',
-        'celery',
-        'milk',
-        'eggs',
-        'bacon',
-        'small children',
-        'faith in humanity',
-        'chicken breast',
-        'sushi',
-        'mop',
-    ];
-    ReactDOM.render(
-        <WebApp
-            list={list}
-        />,
-        container
-    );
+	ReactDOM.render(
+		<div>
+			<h1>My App</h1>
+			<RecipeApp />
+		</div>,
+		document.getElementById('app')
+	);
 });
