@@ -40,13 +40,14 @@ class App extends React.Component {
       }
       const getIngredients = recipes => {
         let options = [];
-        recipes.forEach( (recipe) => {
-          recipe.forEach((ingred) => {
-            if(!options.includes(ingred)) {
-              options.push(ingred);
+        
+        recipes.forEach((ingred) => {
+          ingred.ingredients.forEach(item => {
+            if(!options.includes(item)) {
+              options.push(item);
             }
-          });
-        });
+          })
+        })
         return generateOptions(options);
       }
 
@@ -79,7 +80,7 @@ class App extends React.Component {
           {ingredients}
         </select>
         <input type="text" value={this.state.searchVal} onChange={this.updateSearch} />
-        <RecipeApp recipes={this.state.recipeList.map(items => items)} />
+        <RecipeApp recipes={this.props.recipes.map(items => items)} />
       </div>
     )
   }
