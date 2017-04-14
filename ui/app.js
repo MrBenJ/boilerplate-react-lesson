@@ -6,7 +6,7 @@ import './main.scss';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.updateSearch = this.updateSearch.bind(this);
     this.updateSelect = this.updateSelect.bind(this);
   }
@@ -14,72 +14,69 @@ class App extends React.Component {
   componentWillMount() {
     this.setState({
       searchVal: '',
-      selectVal: '',
-      recipeList: [
-        {
-          name: 'Banana Pudding',
-          ingrediants: ['eggs', 'butter', 'bread', 'lard'],
-          directions: 'Do this with the banana pudding like this'
-        },
-        {
-          name: 'Salad',
-          ingrediants: ['lettuce', 'tomatoes', 'vinegar'],
-          directions: 'Do this with the Salad like this'
-        },
-        {
-          name: 'Hamburgers',
-          ingrediants: ['cheese', 'lettuce', 'tomatoes', 'ketchup'],
-          directions: 'Do this with the banana pudding like this'
-        },
-        {
-          name: 'French Toast',
-          ingrediants: ['eggs', 'butter', 'bread', 'sugar', 'syrup'],
-          directions: 'Do this with the banana pudding like this'
-        },
-        {
-          name: 'Hot Fudge Sundae',
-          ingrediants: ['fudge', 'ice-cream', 'chocolate', 'milk'],
-          directions: 'Do this with the banana pudding like this'
-        }]
-    })
+      selectVal: ''
+    });
   }
 
   updateSearch(evt) {
     this.setState({
-      searchVal: evt.target.value,
-      recipeList: this.state.recipeList.filter(list => list.name.match(new RegExp(this.state.searchVal, 'ig')))
+      searchVal: evt.target.value
     });
-
-    console.log(this.state.recipeList);
   }
 
   updateSelect(evt) {
     this.setState({
       selectVal: evt.target.value
     });
-
-    console.log(this.state.selectVal);
   }
 
   render() {
+    // Generate options for select menu and store into a variable
+      const generateOptions = (arr) => {
+        return arr.map( (item, idx) =>
+          (<option value={item} key={idx}>{item}</option>)
+        );
 
-     let getIngrediants = [];
+      }
+      const getIngredients = recipes => {
+        let options = [];
+        recipes.forEach( (recipe) => {
+          recipe.forEach((ingred) => {
+            if(!options.includes(ingred)) {
+              options.push(ingred);
+            }
+          });
+        });
+        return generateOptions(options);
+      }
 
-     const ingrediants = this.state.recipeList
-       .map(items => items.ingrediants.forEach(items => getIngrediants.push(items)));
+      let ingredients = getIngredients(this.props.recipes);
 
-     getIngrediants = getIngrediants.filter((items, idx, arr) => {
-       return arr.indexOf(items) === idx;
-     });
-
-    let generateSelect = getIngrediants.map((item, idx, arr) => {
-      return (<option value={item} key={idx}>{item}</option>);
-    });
+      // filter through the recipes and return an array of recipes
+      // if state for select value or input is empty
+      //    don't filter respective value
+      // else
+      //    filter values
+      //
+      //
+      //    list.filter( (item) => {
+      //      // filter by regex first
+      //
+      //      THEN
+      //
+      //      // Filter by select value next
+      //
+      //      if BOTH pass,
+      //        return true
+      //      else
+      //        return false
+      //
+      //    } )
 
     return (
       <div>
         <select name="recipe-lists" value={this.state.selectVal} onChange={this.updateSelect}>
-          {generateSelect}
+          {ingredients}
         </select>
         <input type="text" value={this.state.searchVal} onChange={this.updateSearch} />
         <RecipeApp recipes={this.state.recipeList.map(items => items)} />
@@ -89,10 +86,38 @@ class App extends React.Component {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  const data = [
+    {
+      name: 'Banana Pudding',
+      ingredients: ['eggs', 'butter', 'bread', 'lard'],
+      directions: 'Do this with the banana pudding like this'
+    },
+    {
+      name: 'Salad',
+      ingredients: ['lettuce', 'tomatoes', 'vinegar'],
+      directions: 'Do this with the Salad like this'
+    },
+    {
+      name: 'Hamburgers',
+      ingredients: ['cheese', 'lettuce', 'tomatoes', 'ketchup'],
+      directions: 'Do this with the banana pudding like this'
+    },
+    {
+      name: 'French Toast',
+      ingredients: ['eggs', 'butter', 'bread', 'sugar', 'syrup'],
+      directions: 'Do this with the banana pudding like this'
+    },
+    {
+      name: 'Hot Fudge Sundae',
+      ingredients: ['fudge', 'ice-cream', 'chocolate', 'milk'],
+      directions: 'Do this with the banana pudding like this'
+  }];
 	ReactDOM.render(
 		<div>
 			<h1>Recipe Application</h1>
-			<App />
+			<App
+        recipes={data} />
 		</div>,
 		document.getElementById('app')
 	);
