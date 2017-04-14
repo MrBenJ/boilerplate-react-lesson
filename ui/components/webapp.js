@@ -2,66 +2,66 @@ import React from 'react';
 
 class WebApp extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.displayName = "WebApp";
+  constructor(props) {
+    super(props);
+    this.displayName = "WebApp";
 
-        this.onChange = this.onChange.bind(this);
-    }
+    this.onChange = this.onChange.bind(this);
+  }
 
-    componentWillMount() {
-        console.log('Will Mount');
-        this.setState({
-            filterBy: ''
-        });
-    }
+  componentWillMount() {
+    console.log('Will Mount');
+    this.setState({
+      filterBy: ''
+    });
+  }
 
-    onChange(evt) {
-        this.setState({
-            filterBy: evt.target.value
-        });
-    }
+  onChange(evt) {
+    this.setState({
+      filterBy: evt.target.value
+    });
+  }
 
-    render() {
-        console.log('render()');
-        return (
-            <div className="webapp">
-                <div className="main">
-                    <p className="main-text">
-                        GROCERY LIST
+  render() {
+    console.log('render()');
+    return (
+      <div className="webapp">
+        <div className="main">
+          <p className="main-text">
+            GROCERY LIST
                     </p>
-                    <input
-                        type="text"
-                        value={this.state.filterBy}
-                        onChange={this.onChange}/>
-                    <ul>
-                        {this.props.list.map((item, idx) => {
-                            if(item.includes(this.state.filterBy)) {
-                                return <li key={idx}>{item}</li>;
-                            }
-                        })}
-                    </ul>
-                </div>
-            </div>
-        );
-    }
+          <input
+            type="text"
+            value={this.state.filterBy}
+            onChange={this.onChange} />
+          <ul>
+            {this.props.list.map((item, idx) => {
+              if (item.include(this.state.filterBy)) {
+                return <li key={idx}>{item}</li>;
+              }
+            })}
+          </ul>
+        </div>
+      </div>
+    );
+  }
 
 
-    componentDidMount() {
-        console.log('Did Mount');
-    }
+  componentDidMount() {
+    console.log('Did Mount');
+  }
 
-    componentWillUpdate() {
-        console.log('Will Update');
-    }
+  componentWillUpdate() {
+    console.log('Will Update');
+  }
 
-    componentDidUpdate() {
-        console.log('Did Update');
-    }
+  componentDidUpdate() {
+    console.log('Did Update');
+  }
 }
 
 WebApp.propTypes = {
-    list: React.PropTypes.array.isRequired
+  list: React.PropTypes.array.isRequired
 };
 
 export default WebApp;
