@@ -32,55 +32,95 @@ class App extends React.Component {
 
   render() {
     // Generate options for select menu and store into a variable
-      const generateOptions = (arr) => {
-        return arr.map( (item, idx) =>
-          (<option value={item} key={idx}>{item}</option>)
-        );
+    const generateOptions = (arr) => {
+      return arr.map((item, idx) =>
+        (<option value={item} key={idx}>{item}</option>)
+      );
 
-      }
-      const getIngredients = recipes => {
-        let options = [];
-        
-        recipes.forEach((ingred) => {
-          ingred.ingredients.forEach(item => {
-            if(!options.includes(item)) {
-              options.push(item);
-            }
-          })
+    }
+    const getIngredients = recipes => {
+      let options = [];
+
+      recipes.forEach((ingred) => {
+        ingred.ingredients.forEach(item => {
+          if (!options.includes(item)) {
+            options.push(item);
+          }
         })
-        return generateOptions(options);
+      })
+      return generateOptions(options);
+    }
+
+    let ingredients = getIngredients(this.props.recipes);
+
+    // filter through the recipes and return an array of recipes
+    // if state for select value or input is empty
+    //    don't filter respective value
+    // else
+    //    filter values
+    //
+    //
+    //    list.filter( (item) => {
+    //      // filter by regex first
+    //
+    //      THEN
+    //
+    //      // Filter by select value next
+    //
+    //      if BOTH pass,
+    //        return true
+    //      else
+    //        return false
+    //
+    //    } )
+
+    let filterRecipes = recipeArr => {
+      let recipeData = recipeArr;
+      let search = this.state.searchVal;
+      let select = this.state.selectVal;
+      let filteredSearch;
+      let filteredSelect;
+
+      //let selectValue = this.state.selectVal;
+      //if list.ingredients.includes(selectValue)
+
+      if (search) {
+        filteredSearch = recipeArr.filter((list, idx, arr) => {
+          if (list.name.match(new RegExp(search))) {
+            return true;
+          }
+          else {
+            return false;
+          }
+        });
+        return filteredSearch;
       }
+      else if(select) {
+        filteredSelect = recipeArr.filter((list, idx, arr) => {
+          if (list.ingredients.includes(select)) {
+            return true;
+          }
+          else {
+            return false;
+          }
+        });
+        return filteredSelect;
+      }
+      else {
+        return recipeData;
+      }
+    }
 
-      let ingredients = getIngredients(this.props.recipes);
-
-      // filter through the recipes and return an array of recipes
-      // if state for select value or input is empty
-      //    don't filter respective value
-      // else
-      //    filter values
-      //
-      //
-      //    list.filter( (item) => {
-      //      // filter by regex first
-      //
-      //      THEN
-      //
-      //      // Filter by select value next
-      //
-      //      if BOTH pass,
-      //        return true
-      //      else
-      //        return false
-      //
-      //    } )
+    let filtering = filterRecipes(this.props.recipes);
 
     return (
       <div>
         <select name="recipe-lists" value={this.state.selectVal} onChange={this.updateSelect}>
+          <option value="">All</option>
           {ingredients}
         </select>
         <input type="text" value={this.state.searchVal} onChange={this.updateSearch} />
-        <RecipeApp recipes={this.props.recipes.map(items => items)} />
+        <RecipeApp recipes={filtering} />
       </div>
     )
   }
@@ -113,13 +153,14 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'Hot Fudge Sundae',
       ingredients: ['fudge', 'ice-cream', 'chocolate', 'milk'],
       directions: 'Do this with the banana pudding like this'
-  }];
-	ReactDOM.render(
-		<div>
-			<h1>Recipe Application</h1>
-			<App
+    }];
+
+  ReactDOM.render(
+    <div>
+      <h1>Recipe Application</h1>
+      <App
         recipes={data} />
-		</div>,
-		document.getElementById('app')
-	);
+    </div>,
+    document.getElementById('app')
+  );
 });
