@@ -53,9 +53,9 @@ class App extends React.Component {
 
     let ingredients = getIngredients(this.props.recipes);
 
-    let filteredSearch = food => {
+    const filteredSearch = food => {
       return food.filter(list => {
-        if (list.name.match(new RegExp(this.state.searchVal))) {
+        if (list.name.match(new RegExp(this.state.searchVal, 'ig'))) {
           return true;
         }
         else {
@@ -69,7 +69,6 @@ class App extends React.Component {
       let filterSearch = filteredSearch(foodData);
       let search = this.state.searchVal;
       let select = this.state.selectVal;
-      let filterSelect;
 
       if (select) {
         filterSearch = filterSearch.filter(list => {
