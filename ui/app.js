@@ -53,50 +53,26 @@ class App extends React.Component {
 
     let ingredients = getIngredients(this.props.recipes);
 
-    // filter through the recipes and return an array of recipes
-    // if state for select value or input is empty
-    //    don't filter respective value
-    // else
-    //    filter values
-    //
-    //
-    //    list.filter( (item) => {
-    //      // filter by regex first
-    //
-    //      THEN
-    //
-    //      // Filter by select value next
-    //
-    //      if BOTH pass,
-    //        return true
-    //      else
-    //        return false
-    //
-    //    } )
+    let filteredSearch = food => {
+      return food.filter(list => {
+        if (list.name.match(new RegExp(this.state.searchVal))) {
+          return true;
+        }
+        else {
+          return false;
+        }
+      });
+    }
 
-    let filterRecipes = recipeArr => {
-      let recipeData = recipeArr;
+    const filterTable = foodData => {
+      let allFoodData = foodData;
+      let filterSearch = filteredSearch(foodData);
       let search = this.state.searchVal;
       let select = this.state.selectVal;
-      let filteredSearch;
-      let filteredSelect;
+      let filterSelect;
 
-      //let selectValue = this.state.selectVal;
-      //if list.ingredients.includes(selectValue)
-
-      if (search) {
-        filteredSearch = recipeArr.filter((list, idx, arr) => {
-          if (list.name.match(new RegExp(search))) {
-            return true;
-          }
-          else {
-            return false;
-          }
-        });
-        return filteredSearch;
-      }
-      else if(select) {
-        filteredSelect = recipeArr.filter((list, idx, arr) => {
+      if (select) {
+        filterSearch = filterSearch.filter(list => {
           if (list.ingredients.includes(select)) {
             return true;
           }
@@ -104,14 +80,12 @@ class App extends React.Component {
             return false;
           }
         });
-        return filteredSelect;
       }
-      else {
-        return recipeData;
-      }
+
+      return search || select ? filterSearch : allFoodData;
     }
 
-    let filtering = filterRecipes(this.props.recipes);
+    let filtering = filterTable(this.props.recipes);
 
     return (
       <div>
