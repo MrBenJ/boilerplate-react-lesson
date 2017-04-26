@@ -53,38 +53,31 @@ class App extends React.Component {
 
     let ingredients = getIngredients(this.props.recipes);
 
-    const filteredSearch = food => {
-      return food.filter(list => {
-        if (list.name.match(new RegExp(this.state.searchVal, 'ig'))) {
-          return true;
-        }
-        else {
-          return false;
-        }
-      });
+    const filterByString = food => {
+      const searchTerm = new RegExp(this.state.searchVal, 'ig');
+      return food.filter(list => list.name.match(searchTerm));
     }
 
-    const filterTable = foodData => {
-      let allFoodData = foodData;
-      let filterSearch = filteredSearch(foodData);
-      let search = this.state.searchVal;
-      let select = this.state.selectVal;
+    /**
+     * filterTable(prop.recipes)
+     * Filters the recipes twice, once by string via filterByString(), and the select menu's value
+     *
+     * @param  {Array} allFoodData - An array of the 'recipes' prop that's passed in from the root component level
+     * @return {Array}             - Array filtered by string and select menu value
+     */
+    const filterTable = allFoodData => {
+      // Note: Filtered one time by filterByString();
+      let filterSearch = filterByString(allFoodData);
+      let searchVal = this.state.searchVal;
+      let selectVal = this.state.selectVal;
 
-      if (select) {
-        filterSearch = filterSearch.filter(list => {
-          if (list.ingredients.includes(select)) {
-            return true;
-          }
-          else {
-            return false;
-          }
-        });
+      if(searchVal) { return searchVal;}
+      if (selectVal) {
+        filterSearch = filterSearch.filter(list => list.ingredients.includes(selectVal));
       }
 
-      return search || select ? filterSearch : allFoodData;
+      return selectVal ? filterSearch : allFoodData;
     }
-
-    let filtering = filterTable(this.props.recipes);
 
     return (
       <div>
@@ -93,7 +86,7 @@ class App extends React.Component {
           {ingredients}
         </select>
         <input type="text" value={this.state.searchVal} onChange={this.updateSearch} />
-        <RecipeApp recipes={filtering} />
+        <RecipeApp recipes={filterTable(this.props.recipes)} />
       </div>
     )
   }
@@ -137,3 +130,52 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('app')
   );
 });
+
+
+//route
+
+// let MongoClient = require('mongodb').MongoClient;
+
+// let db = 'mongodb://localhost:27017/my_test_data';
+
+// app.get('/data', (req, res) => {
+//   MongoClient.connect(db, (err, inst) => {
+//     if(!err) {
+//       let result = inst.findAll({}).toArray();
+//       res.send(result);
+
+//     } else { console.error(err);}
+
+
+//   })
+
+// });
+
+
+// function getJSON(url) {
+//   return new Promise( (resolve, reject) => {
+//     let xhr = new XMLHttpRequest();
+
+//     xhr.open('POST', 'http://www.google.com/');
+//     xhr.setRequestHeader('Pragma', 'no-cache');
+//     xhr.setRequestHeader('Cache-Control', 'no-cache, no-store');
+
+//     xhr.onreadystatechange = () => {
+//       if(xhr.readyState < 4) {
+//         return;
+//       }
+
+//       if(xhr.status !== 200) {
+//         console.error('Error!');
+//         return;
+//       }
+
+//       if(xhr.readyState === 4) {
+//         console.log('It worked!');
+//         return xhr.response;
+//       }
+//     }
+
+//     xhr.send(data);
+//       });
+// }
