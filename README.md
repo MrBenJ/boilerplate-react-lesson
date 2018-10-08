@@ -1,6 +1,8 @@
 React Lesson Boilerplate
 ========================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/MrBenJ/boilerplate-react-lesson.svg)](https://greenkeeper.io/)
+
 After cloning - run `npm install` to install dependencies.
 
 To run the express server, run `npm start`
